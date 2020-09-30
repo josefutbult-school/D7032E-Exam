@@ -1,0 +1,38 @@
+{
+  "name": "English",
+  "author": "© Collins",
+  "menu": [
+    "**************************************\n",
+    "*    Välkommen till VarietyBoggle    *\n",
+    "**************************************\n",
+    "* Meny:                              *\n",
+    "%s",
+    "**************************************\n"
+  ],
+  "settings": [
+    "**************************************\n",
+    "*           Inställningar            *\n",
+    "**************************************\n",
+    "* Nuvarande inställningar            *\n",
+    "%s",
+    "**************************************\n"
+  ],
+  "client_text": "Välkommen till VarietyBoggle! Spelet är %s",
+  "actions": {
+    "yes": "ja",
+    "no": "nej",
+    "running": "körs",
+    "value": "värde",
+    "format": "format",
+    "play": "spela",
+    "unrecognized command" : "Icke förståeligt kommando",
+    "settings": "inställningar",
+    "quit": "avsluta",
+    "board size": "brädesstorlek",
+    "language": "språk",
+    "show solution": "visa lösningar",
+    "number of players": "antal spelare",
+    "seconds per game": "sekunder per spel",
+    "save": "spara"
+  }
+}

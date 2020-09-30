@@ -1,0 +1,40 @@
+{
+  "name": "English",
+  "author": "© Collins",
+  "menu": [
+    "**************************************\n",
+    "*      Welcome to VarietyBoggle      *\n",
+    "**************************************\n",
+    "* Menu:                              *\n",
+    "%s",
+    "**************************************\n"
+  ],
+  "settings": [
+    "**************************************\n",
+    "*             Settings               *\n",
+    "**************************************\n",
+    "* Current settings:                  *\n",
+    "%s",
+    "**************************************\n"
+  ],
+  "client_text": "Welcome to VarietyBoggle! The game is %s",
+  "actions": {
+    "yes": "yes",
+    "no": "no",
+    "running": "running",
+    "value": "value",
+    "format": "format",
+    "play": "play",
+    "unrecognized command" : "Unrecognized command",
+    "settings": "settings",
+    "quit": "quit",
+    "board size": "board size",
+    "language": "language",
+    "show solution": "show solution",
+    "number of players": "number of players",
+    "seconds per game": "seconds per game",
+    "save": "save"
+
+
+  }
+}
