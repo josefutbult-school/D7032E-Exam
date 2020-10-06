@@ -25,12 +25,12 @@ class HostIO:
             for instance in menu_items:
                 if instance.key is command:
                     if instance.args is not None:
-                        instance.function(instance.args)
+                        instance.function(*instance.args)
                     else:
                         instance.function()
                     break
         else:
-            print(f"{get_dict_meta('actions')['unrecognized command'].capitalize()}\n")
+            print(f"{DictionaryParser.get_dict_meta('actions')['unrecognized command'].capitalize()}\n")
 
     @staticmethod
     def display_settings_menu(menu_items):

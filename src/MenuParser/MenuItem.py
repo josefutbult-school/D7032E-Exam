@@ -1,5 +1,5 @@
 class MenuItem:
-    def __init__(self, text, key, function, args=None):
+    def __init__(self, text, key, function, args=()):
         self.text = text
         self.key = key
         self.function = function

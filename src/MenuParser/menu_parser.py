@@ -91,7 +91,7 @@ def generate_menu():
             MenuItem(text=f"{DictionaryParser.get_dict_meta('actions')['play'].capitalize()} standard boggle",
                      key='0',
                      function=run_game,
-                     args=StandardBoggle),
+                     args=(StandardBoggle, False)),
             MenuItem(text=f"{DictionaryParser.get_dict_meta('actions')['play'].capitalize()} Generous boggle",
                      key='1',
                      function=GenerousBoggle),
