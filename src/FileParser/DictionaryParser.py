@@ -11,7 +11,8 @@ class DictionaryParser:
                              'menu': list,
                              'settings': list,
                              'client_text': str,
-                             'actions': dict}
+                             'actions': dict,
+                             'letters': list}
 
     meta = {}
     wordlist = []

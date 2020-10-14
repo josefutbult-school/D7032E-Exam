@@ -4,6 +4,7 @@ from string import ascii_lowercase
 
 from Networking.HostNetworking import HostNetworking
 from IO.HostIO import HostIO
+from FileParser.SettingsParser import SettingsParser
 
 TEST_WORDS = ['Cow', 'Moose', 'Geese', 'Goat', 'Toad']
 SUCCESS_RATE = 0.5
@@ -28,13 +29,23 @@ class PlayerIO:
                 word = choice(TEST_WORDS)
             else:
                 word = ''.join([choice(ascii_lowercase) for i in range(randint(3, 6))])
-            self.write_player(f'Tries word {word}')
+            PlayerIO.write_player(player_id=player_id, out=f'Tries word {word}')
             return word
+
+    @staticmethod
+    def write_player_gameboard(player_id, board, game_info):
+        board_size = SettingsParser.get_setting('board_size')
+        gameboard = f"\n+{'-' * (board_size * 2 - 1)}+\n"
+        for row in range(board_size):
+            for column in range(board_size):
+                gameboard += f"|{board[row][column]}"
+            gameboard += f"|\n+{'-' * (board_size * 2 - 1)}+\n"
+        PlayerIO.write_player(player_id=player_id, out=gameboard + game_info)
 
     @staticmethod
     def write_player(player_id, out):
         if not PlayerIO.mockup:
-            HostNetworking.player_write(player_id, out + ('' if len(out) > 0 and out[-1] == '\n' else '\n'))
+            HostNetworking.player_write(player_id, out + ('' if out != '' and out[-1] == '\n' else '\n'))
         else:
             HostIO.print(f'From player {player_id}\'s terminal: \"{out}\"', clear_screen=False, direct_continue=True)
 

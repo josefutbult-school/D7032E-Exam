@@ -11,7 +11,8 @@ class SettingsParser:
                                  'language': str,
                                  'show_solution': int,
                                  'number_players': int,
-                                 'game_time': int}
+                                 'game_time': int,
+                                 'letters': list}
 
     settings = {}
 

@@ -1,8 +1,7 @@
-from .BoggleBase import BoggleBase
-from FileParser.DictionaryParser import DictionaryParser
+from .WordBoggleBase import WordBoggleBase
 
 
-class StandardBoggle(BoggleBase):
-    def check_move(self, player, move) -> tuple:
-        return (True, "Word exists in wordlist!") if DictionaryParser.check_dict_word(move) \
-            else (False, "No such word in wordlist")
+class StandardBoggle(WordBoggleBase):
+    def check_move(self, player, move, rules_args=None) -> tuple:
+        return (True, "Word exists in wordlist!") if self._check_move(move=move) \
+            else (False, "No such word in wordlist, or word occupied")

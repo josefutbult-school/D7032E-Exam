@@ -34,7 +34,6 @@
     "number of players": "number of players",
     "seconds per game": "seconds per game",
     "save": "save"
-
-
-  }
+  },
+  "letters": ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]
 }
