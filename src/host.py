@@ -1,9 +1,9 @@
-from BoggleVariants.FoggleBoggle import FoggleBoggle
+from BoggleGame.BoggleVariants import StandardBoggle
+from BoggleGame.BoggleVariants.FoggleBoggle import FoggleBoggle
 from MenuParser.menu_parser import generate_menu
 from FileParser.SettingsParser import SettingsParser
 from FileParser.DictionaryParser import DictionaryParser
 from GameLogic.game_logic import run_game
-from BoggleVariants.StandardBoggle import StandardBoggle
 
 
 def main():
@@ -15,7 +15,7 @@ def main():
 def mock_game():
     SettingsParser.load_settings()
     DictionaryParser.load_dictionary(language=SettingsParser.get_setting('language'))
-    run_game(boogle_class=StandardBoggle, paralell_run=False, mockup=True)
+    run_game(boogle_class=StandardBoggle, mockup=True)
 
 
 def generate_board():

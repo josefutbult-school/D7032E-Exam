@@ -1,25 +1,20 @@
-from BoggleVariants.BoggleBase import BoggleBase
-from BoggleVariants.BattleBoggle import BattleBoggle
-from BoggleVariants.FoggleBoggle import FoggleBoggle
-from BoggleVariants.GenerousBoggle import GenerousBoggle
-from BoggleVariants.StandardBoggle import StandardBoggle
+from BoggleGame.BoggleVariants.BattleBoggle import BattleBoggle
+from BoggleGame.BoggleVariants.FoggleBoggle import FoggleBoggle
+from BoggleGame.BoggleVariants.StandardBoggle import StandardBoggle
 
 from IO.HostIO import HostIO
 from FileParser.SettingsParser import SettingsParser
 from FileParser.DictionaryParser import DictionaryParser
-from Networking.HostNetworking import HostNetworking
 from GameLogic.game_logic import run_game
 
 from .MenuItem import MenuItem
 
 
-def settings_standard(args):
-    input_text, key = args
+def settings_standard(input_text, key):
     SettingsParser.set_setting(key=key, value=HostIO.get_input(f"Set {input_text}: "))
 
 
-def settings_standard_int(args):
-    input_text, key = args
+def settings_standard_int(input_text, key):
     try:
         val = int(HostIO.get_input(f"Set {input_text}: "))
     except ValueError:
@@ -29,8 +24,7 @@ def settings_standard_int(args):
     SettingsParser.set_setting(key=key, value=val)
 
 
-def settings_standard_bool(args):
-    input_text, key = args
+def settings_standard_bool(input_text, key):
     val = HostIO.get_input(f"Set {input_text} (should be 1, true, True, 0, false or False): ")
     if val in ['1', 'true', 'True']:
         SettingsParser.set_setting(key=key, value=True)
@@ -77,7 +71,7 @@ def generate_settings():
                      function=settings_standard_int,
                      args=("seconds per game", "game_time")),
             MenuItem(text=f"{DictionaryParser.get_dict_meta('actions')['save'].capitalize()}",
-                     args=exit_command,
+                     args=(exit_command, ),
                      key='q',
                      function=settings_main_menu),
         ]
@@ -92,16 +86,12 @@ def generate_menu():
                      key='0',
                      function=run_game,
                      args=(StandardBoggle, False)),
-            MenuItem(text=f"{DictionaryParser.get_dict_meta('actions')['play'].capitalize()} Generous boggle",
-                     key='1',
-                     function=run_game,
-                     args=(GenerousBoggle, False)),
             MenuItem(text=f"{DictionaryParser.get_dict_meta('actions')['play'].capitalize()} Battle boggle",
-                     key='2',
+                     key='1',
                      function=run_game,
                      args=(BattleBoggle, False)),
             MenuItem(text=f"{DictionaryParser.get_dict_meta('actions')['play'].capitalize()} Foggle boggle",
-                     key='3',
+                     key='2',
                      function=run_game,
                      args=(FoggleBoggle, False)),
             MenuItem(text=f"{DictionaryParser.get_dict_meta('actions')['settings'].capitalize()}",

@@ -49,3 +49,7 @@ class PlayerIO:
         else:
             HostIO.print(f'From player {player_id}\'s terminal: \"{out}\"', clear_screen=False, direct_continue=True)
 
+    @staticmethod
+    def clear_player(player_id):
+        if not PlayerIO.mockup:
+            HostNetworking.player_write(player_id, '\n' * 20)
