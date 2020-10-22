@@ -12,7 +12,7 @@ class SettingsParser:
                                  'show_solution': int,
                                  'number_players': int,
                                  'game_time': int,
-                                 'letters': list}
+                                 'generous_boggle': int}
 
     settings = {}
 

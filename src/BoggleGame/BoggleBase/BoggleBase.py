@@ -1,8 +1,9 @@
 from itertools import product
-from random import seed
+from random import seed, choice
 from datetime import datetime
 
 from BoggleGame.BoggleBase.BoogleTile import BoggleTile
+from FileParser.DictionaryParser import DictionaryParser
 
 OKGREEN = '\033[92m'
 FAIL = '\033[91m'
@@ -14,6 +15,7 @@ class BoggleBase:
 
     def __init__(self, number_of_boards, board_size):
         seed(datetime.now())
+        self.board_size = board_size
 
     def traverse_board(self, board, move, previous_position):
         if len(move) > 0:
@@ -38,7 +40,7 @@ class BoggleBase:
 
         return []
 
-    def _check_move(self, move, board_id, rules_args=None) -> bool:
+    def _check_move(self, move, board_id, generous_boggle, rules_args=None) -> bool:
         if move == '':
             return False
 
@@ -46,7 +48,8 @@ class BoggleBase:
         for row in range(len(board)):
             for column in range(len(board[row])):
                 if move[0] == board[row][column].value and not board[row][column].traversed:
-                    board[row][column].traversed = True
+                    if not generous_boggle:
+                        board[row][column].traversed = True
                     tiles = [board[row][column]] + self.traverse_board(board, move[1:], (row, column))
                     res = ''.join([str(instance.value) for instance in tiles])
                     if move == res and self.rules(board_id, move, rules_args):
@@ -60,9 +63,14 @@ class BoggleBase:
 
         return False
 
-    def get_board_string(self, board_id):
-        return [[f"{FAIL if instance.used_in_word else OKGREEN}{instance}{ENDC}"
+    def get_board_size(self):
+        return self.board_size
+
+    def get_board_string(self, board_id, colored=True):
+        if colored:
+            return [[f"{FAIL if instance.used_in_word else OKGREEN}{instance.value}{ENDC}"
                  for instance in row] for row in self.get_board(board_id)]
+        return [[instance.value for instance in row] for row in self.get_board(board_id)]
 
     # The following functions should/can be implemented in inherited classes
     def get_points(self, move) -> int:
@@ -78,7 +86,7 @@ class BoggleBase:
             return 5
         return 11
 
-    def check_move(self, board_id, move, rules_args=None) -> bool:
+    def check_move(self, board_id, move, generous_boggle, rules_args=None) -> bool:
         raise NotImplementedError()
 
     def rules(self, board_id, move, rules_args=None) -> bool:
@@ -87,8 +95,10 @@ class BoggleBase:
     def get_game_info(self, board_id):
         return ""
 
-    def create_board(self, board_size) -> list:
-        return [[BoggleTile() for column in range(board_size)] for row in range(board_size)]
+    def create_board(self, board_size, tile_config_name=None) -> list:
+        tile_config = [[char.lower() for char in row] for row in
+                       DictionaryParser.get_dict_meta('tile_configs')[tile_config_name]]
+        return [[BoggleTile(value=choice(tile_config.pop(0))) for column in range(board_size)] for row in range(board_size)]
 
     def get_board(self, board_id) -> list:
         raise NotImplementedError()

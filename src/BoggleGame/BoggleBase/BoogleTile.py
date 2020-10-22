@@ -1,7 +1,9 @@
 class BoggleTile:
     traversed = False
-    value = None
     used_in_word = False
+
+    def __init__(self, value=None):
+        self.value = value
 
     def __str__(self):
         return str(self.value)

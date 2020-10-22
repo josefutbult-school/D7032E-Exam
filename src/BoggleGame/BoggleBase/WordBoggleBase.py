@@ -1,5 +1,4 @@
 from abc import ABC
-from random import choice
 
 from BoggleGame.BoggleBase.BoggleBase import BoggleBase
 from FileParser.DictionaryParser import DictionaryParser
@@ -9,11 +8,11 @@ class WordBoggleBase(BoggleBase, ABC):
     def __init__(self, number_of_boards, board_size):
         super(WordBoggleBase, self).__init__(number_of_boards, board_size)
 
-    def create_board(self, board_size) -> list:
-        board = super(WordBoggleBase, self).create_board(board_size)
-        for row in board:
-            for col in range(len(row)):
-                row[col].value = choice(DictionaryParser.get_dict_meta('letters'))
+    def create_board(self, board_size, tile_config_name=None) -> list:
+        if board_size not in [4, 5]:
+            raise IOError(f"Board size: {board_size}")
+        board = super(WordBoggleBase, self).\
+            create_board(board_size=board_size, tile_config_name='boggle16' if board_size == 4 else 'boggle25')
 
         board[2][0].value = 'c'
         board[2][1].value = 'o'

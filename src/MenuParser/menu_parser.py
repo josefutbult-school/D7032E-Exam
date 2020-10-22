@@ -14,14 +14,25 @@ def settings_standard(input_text, key):
     SettingsParser.set_setting(key=key, value=HostIO.get_input(f"Set {input_text}: "))
 
 
-def settings_standard_int(input_text, key):
+def settings_standard_int(input_text, key, set=True):
     try:
         val = int(HostIO.get_input(f"Set {input_text}: "))
     except ValueError:
         print("Input is not an int")
         return
+    if set:
+        SettingsParser.set_setting(key=key, value=val)
+    else:
+        return val
 
-    SettingsParser.set_setting(key=key, value=val)
+
+def board_size_setting(input_text, key):
+    val = settings_standard_int(input_text, key, set=False)
+    if val is not None:
+        if val not in [4, 5]:
+            print("The board size should be 4 or 5")
+        else:
+            SettingsParser.set_setting(key=key, value=val)
 
 
 def settings_standard_bool(input_text, key):
@@ -53,7 +64,7 @@ def generate_settings():
             MenuItem(text=f"{DictionaryParser.get_dict_meta('actions')['board size'].capitalize()} "
                           f"{SettingsParser.get_setting('board_size')}x{SettingsParser.get_setting('board_size')}",
                      key='b',
-                     function=settings_standard_int,
+                     function=board_size_setting,
                      args=("board size", "board_size")),
             MenuItem(text=f"{DictionaryParser.get_dict_meta('actions')['show solution'].capitalize()} "
                           f"{SettingsParser.get_setting('show_solution')}",
@@ -70,6 +81,11 @@ def generate_settings():
                      key='t',
                      function=settings_standard_int,
                      args=("seconds per game", "game_time")),
+            MenuItem(text=f"{DictionaryParser.get_dict_meta('actions')['generous'].capitalize()} boggle "
+                          f"{SettingsParser.get_setting('generous_boggle')}",
+                     key='g',
+                     function=settings_standard_int,
+                     args=("generous boggle", "generous_boggle")),
             MenuItem(text=f"{DictionaryParser.get_dict_meta('actions')['save'].capitalize()}",
                      args=(exit_command, ),
                      key='q',
@@ -85,15 +101,15 @@ def generate_menu():
             MenuItem(text=f"{DictionaryParser.get_dict_meta('actions')['play'].capitalize()} standard boggle",
                      key='0',
                      function=run_game,
-                     args=(StandardBoggle, False)),
+                     args=(StandardBoggle, )),
             MenuItem(text=f"{DictionaryParser.get_dict_meta('actions')['play'].capitalize()} Battle boggle",
                      key='1',
                      function=run_game,
-                     args=(BattleBoggle, False)),
+                     args=(BattleBoggle, )),
             MenuItem(text=f"{DictionaryParser.get_dict_meta('actions')['play'].capitalize()} Foggle boggle",
                      key='2',
                      function=run_game,
-                     args=(FoggleBoggle, False)),
+                     args=(FoggleBoggle, )),
             MenuItem(text=f"{DictionaryParser.get_dict_meta('actions')['settings'].capitalize()}",
                      key='s',
                      function=generate_settings),

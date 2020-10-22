@@ -33,13 +33,15 @@ class PlayerIO:
             return word
 
     @staticmethod
-    def write_player_gameboard(player_id, board, game_info):
-        board_size = SettingsParser.get_setting('board_size')
-        gameboard = f"\n+{'-' * (board_size * 2 - 1)}+\n"
-        for row in range(board_size):
-            for column in range(board_size):
-                gameboard += f"|{board[row][column]}"
-            gameboard += f"|\n+{'-' * (board_size * 2 - 1)}+\n"
+    def write_player_gameboard(player_id, board, game_info, board_size):
+        if board is not None:
+            gameboard = f"\n+{'-' * (board_size * 2 - 1)}+\n"
+            for row in range(board_size):
+                for column in range(board_size):
+                    gameboard += f"|{board[row][column]}"
+                gameboard += f"|\n+{'-' * (board_size * 2 - 1)}+\n"
+        else:
+            gameboard = ''
         PlayerIO.write_player(player_id=player_id, out=gameboard + game_info)
 
     @staticmethod
