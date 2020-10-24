@@ -1,3 +1,4 @@
+# This is a container class that takes the function of a tile on the game board matrix.
 class BoggleTile:
     traversed = False
     used_in_word = False

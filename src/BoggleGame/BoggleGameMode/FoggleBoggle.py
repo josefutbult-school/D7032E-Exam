@@ -1,7 +1,8 @@
 from BoggleGame.BoardTypes.MultipleBoardBoggle import MultipleBoardBoggle
-from BoggleGame.BoggleBase.NumberBoggleBase import NumberBoggleBase
+from BoggleGame.BoggleType.NumberBoggleBase import NumberBoggleBase
 
 
+# This game mode is a number based mode where the different players gets their own isolated board
 class FoggleBoggle(NumberBoggleBase, MultipleBoardBoggle):
     def __init__(self, number_of_boards, board_size):
         super().__init__(number_of_boards, board_size)

@@ -1,10 +1,9 @@
 import socket
 from IO.HostIO import HostIO
+from Networking.adress import IP, PORT
 
 
 class HostNetworking:
-    IP = '127.0.0.1'
-    PORT = 666
     connections = []
     server_socket = None
 
@@ -12,7 +11,7 @@ class HostNetworking:
     def open_socket():
         HostNetworking.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         HostNetworking.server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        HostNetworking.server_socket.bind((HostNetworking.IP, HostNetworking.PORT))
+        HostNetworking.server_socket.bind((IP, PORT))
         HostNetworking.server_socket.listen(1)
 
     @staticmethod

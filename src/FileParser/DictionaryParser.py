@@ -5,6 +5,9 @@ from json.decoder import JSONDecodeError
 from FileParser.path import get_root_dir
 
 
+# This class is responsible for loading in a dictionary, a text file with words separated by a new line, and a meta
+# json file, that contains menu's, tile configurations and specific word translations. It should print a message
+# if a file is unable to load and exit the program without throwing an error.
 class DictionaryParser:
     DEFAULT_DICT_STANDARD = {'name': str,
                              'author': str,

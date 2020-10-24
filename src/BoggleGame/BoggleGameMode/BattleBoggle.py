@@ -1,8 +1,9 @@
-from BoggleGame.BoardTypes.MultipleBoardBoggle import MultipleBoardBoggle
-from BoggleGame.BoggleBase.WordBoggleBase import WordBoggleBase
+from BoggleGame.BoardTypes.SingleBoardBoggle import SingleBoardBoggle
+from BoggleGame.BoggleType.WordBoggleBase import WordBoggleBase
 
 
-class StandardBoggle(WordBoggleBase, MultipleBoardBoggle):
+# This game mode is a word based mode where the different players share the same board
+class BattleBoggle(WordBoggleBase, SingleBoardBoggle):
     def __init__(self, number_of_boards, board_size):
         super().__init__(number_of_boards, board_size)
 
@@ -10,11 +11,11 @@ class StandardBoggle(WordBoggleBase, MultipleBoardBoggle):
         return (True, "Word exists in wordlist!") if self._check_move(board_id=board_id,
                                                                       move=move,
                                                                       generous_boggle=generous_boggle) \
-            else (False, "No such word in wordlist, or word occupied")
+            else (False, "No such word in wordlist, or already taken by you or another player")
 
     def __str__(self):
-        return "Standard Boggle"
+        return "Battle Boggle"
 
     @staticmethod
     def get_name():
-        return "Standard Boggle"
+        return "Battle Boggle"

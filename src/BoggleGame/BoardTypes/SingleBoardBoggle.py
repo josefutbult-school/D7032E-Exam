@@ -3,6 +3,8 @@ from abc import ABC
 from BoggleGame.BoggleBase.BoggleBase import BoggleBase
 
 
+# This is an abstract class meant to be one of two implemented by a game mode. It lets the
+# lets the different players share a single board, making their moves impact each other.
 class SingleBoardBoggle(BoggleBase, ABC):
     def __init__(self, number_of_boards, board_size):
         super().__init__(number_of_boards, board_size)

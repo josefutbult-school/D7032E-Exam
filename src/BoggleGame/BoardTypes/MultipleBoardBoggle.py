@@ -3,6 +3,9 @@ from abc import ABC
 from BoggleGame.BoggleBase.BoggleBase import BoggleBase
 
 
+# This is an abstract class meant to be one of two implemented by a game mode. It lets the
+# different players use different (deep cloned) boards, which means their moves doesn't
+# interfere with each other.
 class MultipleBoardBoggle(BoggleBase, ABC):
     def __init__(self, number_of_boards, board_size):
         super().__init__(number_of_boards, board_size)

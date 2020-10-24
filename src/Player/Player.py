@@ -1,7 +1,3 @@
-from IO.PlayerIO import PlayerIO
-
-
-# 4478
 class Player:
     def __init__(self, id):
         self.id = id
@@ -10,11 +6,11 @@ class Player:
     def get_id(self):
         return self.id
 
-    def parse_move(self, result, score):
+    def parse_move(self, result, score) -> str:
         if result[0]:
             self.points += score
 
-        PlayerIO.write_player(self.id, result[1])
+        return result[1]
 
     def get_points(self):
         return self.points

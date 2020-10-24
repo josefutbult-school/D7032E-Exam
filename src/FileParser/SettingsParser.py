@@ -6,6 +6,8 @@ from io import UnsupportedOperation
 from FileParser.path import get_root_dir
 
 
+# This class is responsible for loading in a json file containing stored settings from different runtimes.
+# It should print a message if a file is unable to load and exit the program without throwing an error.
 class SettingsParser:
     DEFAULT_SETTINGS_STANDARD = {'board_size': int,
                                  'language': str,
@@ -68,8 +70,3 @@ class SettingsParser:
     @staticmethod
     def set_setting(key, value):
         SettingsParser.settings[key] = value
-
-    # TODO: Remove
-    @staticmethod
-    def print_settings():
-        print(SettingsParser.settings)
