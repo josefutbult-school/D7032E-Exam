@@ -1,5 +1,5 @@
-from BoggleGame.BoggleVariants.FoggleBoggle import FoggleBoggle
-from BoggleGame.BoggleVariants.StandardBoggle import StandardBoggle
+from BoggleGame.BoggleGameMode.FoggleBoggle import FoggleBoggle
+from BoggleGame.BoggleGameMode.StandardBoggle import StandardBoggle
 from MenuParser.MenuParser import MenuParser
 from FileParser.SettingsParser import SettingsParser
 from FileParser.DictionaryParser import DictionaryParser

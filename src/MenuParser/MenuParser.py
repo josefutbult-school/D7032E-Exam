@@ -1,6 +1,6 @@
-from BoggleGame.BoggleVariants.BattleBoggle import BattleBoggle
-from BoggleGame.BoggleVariants.FoggleBoggle import FoggleBoggle
-from BoggleGame.BoggleVariants.StandardBoggle import StandardBoggle
+from BoggleGame.BoggleGameMode.BattleBoggle import BattleBoggle
+from BoggleGame.BoggleGameMode.FoggleBoggle import FoggleBoggle
+from BoggleGame.BoggleGameMode.StandardBoggle import StandardBoggle
 
 from IO.HostIO import HostIO
 from FileParser.SettingsParser import SettingsParser
