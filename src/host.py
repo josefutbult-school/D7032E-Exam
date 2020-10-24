@@ -6,6 +6,7 @@ from FileParser.DictionaryParser import DictionaryParser
 from GameLogic.GameLogic import GameLogic
 
 
+# This is the main file for the host application. It sets up a new run of the program and loads a menu
 def main():
     SettingsParser.load_settings()
     DictionaryParser.load_dictionary(language=SettingsParser.get_setting('language'))

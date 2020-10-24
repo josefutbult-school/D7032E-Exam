@@ -1,3 +1,4 @@
+# This class works as a container for a specific players data, and some simple functionality
 class Player:
     def __init__(self, id):
         self.id = id

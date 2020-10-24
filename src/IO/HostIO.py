@@ -2,6 +2,8 @@ import os
 from FileParser.DictionaryParser import DictionaryParser
 
 
+# This class takes care of all output to the command prompt and all input from the user.
+# It also takes care of creating a command line based menu from a list of menu items.
 class HostIO:
     @staticmethod
     def get_input(text):

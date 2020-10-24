@@ -10,6 +10,9 @@ TEST_WORDS = ['Cow', 'Moose', 'Geese', 'Goat', 'Toad']
 SUCCESS_RATE = 0.5
 
 
+# This class should take care of every players IO functionality, working as a bridge between
+# the player and the HostNetworking class. It also allows a mockup variable to be set, rerouting
+# all IO to the HostIO class for testing.
 class PlayerIO:
     mockup = False
 

@@ -10,7 +10,12 @@ from GameLogic.GameLogic import GameLogic
 from .MenuItem import MenuItem
 
 
+# This class is responsible for creating lists of menu items that is passed on to the HostIO class, and to create
+# functions that works like arguments for the different menu items. The functions provided for each menu item is
+# run when the corresponding item is selected in a menu with its corresponding arguments
 class MenuParser:
+
+    # The following functions takes inputs in the settings menu and parses it to the correct types
     @staticmethod
     def settings_standard(input_text, key):
         SettingsParser.set_setting(key=key, value=HostIO.get_input(f"Set {input_text}: "))

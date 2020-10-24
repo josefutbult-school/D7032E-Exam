@@ -3,6 +3,8 @@ from IO.HostIO import HostIO
 from Networking.adress import IP, PORT
 
 
+# This class is in charge of the network communication to clients. Note that as all network related activity is
+# taken care of here, it lets the programmer easily swap this class out for another means of communication.
 class HostNetworking:
     connections = []
     server_socket = None
