@@ -3,7 +3,7 @@ This is my home exam for the course D7032E at LTU. The goal of this project is t
 of the game Boggle with a good software architecture.
 
 ## Running the program
-This program is implemented in Python. It needs a python interpreter to function, which can be found 
+This program is implemented in Python for a UNIX based operating system. It needs a python interpreter to function, which can be found 
 at `https://www.python.org/downloads/`. The root folder of the project is the D7032E-Exam folder, which 
 mean that the program should be ran from there and not the src folder. To run the host application, make
 sure you stand in the D7032E-Exam directory in the command line, and run the following command (for UNIX 
@@ -11,7 +11,7 @@ based operating systems).
 
 ```sudo python3 src/host.py```
 
-The program needs, at least on Linux, sudo permissions to be able to bind to sockets. 
+The program needs sudo permissions to be able to bind to sockets. 
 
 The client is started in the same manner, does not need sudo permission.
 
