@@ -1,17 +1,15 @@
 import unittest
 
 from os.path import isdir, isfile
-from time import sleep
 
+from BoggleGame.BoggleGameMode.BattleBoggle import BattleBoggle
+from BoggleGame.BoggleGameMode.FoggleBoggle import FoggleBoggle
 from BoggleGame.BoggleGameMode.StandardBoggle import StandardBoggle
 from FileParser.path import get_root_dir
 from FileParser.SettingsParser import SettingsParser
 from FileParser.DictionaryParser import DictionaryParser
 from GameLogic.GameLogic import GameLogic
 from IO.HostIO import HostIO
-from IO.PlayerIO import PlayerIO
-from MenuParser.MenuItem import MenuItem
-from MenuParser.MenuParser import MenuParser
 
 
 class DirTest(unittest.TestCase):
@@ -104,10 +102,10 @@ class DictionaryTest(unittest.TestCase):
         self.assertTrue(success)
 
 
-def check_winner(boggle_instance, word, time=1):
+def check_winner(boggle_instance, words, time=1, further_words=[]):
     SettingsParser.set_setting('game_time', time)
 
-    moves = [word] if word is not None else []
+    moves = [[words] if words is not None else [], further_words]
 
     return GameLogic.run_game(boggle_class=StandardBoggle,
                               mockup=True,
@@ -118,6 +116,7 @@ def check_winner(boggle_instance, word, time=1):
 def standard_setup():
     SettingsParser.load_settings()
     DictionaryParser.load_dictionary(language=SettingsParser.get_setting('language'))
+    SettingsParser.set_setting('generous_boggle', False)
     HostIO.set_terminal_output(False)
 
 
@@ -353,6 +352,8 @@ class BaseRequirementsTest(unittest.TestCase):
         standard_boggle.set_board_value(position=(0, 2), value='r')
         standard_boggle.set_board_value(position=(0, 3), value='d')
 
+        board = standard_boggle.get_board_string(0, colored=False)
+
         standard_boggle.game_paralell_process()
         self.assertCountEqual(standard_boggle.get_words_in_board(), ['word'])
 
@@ -391,18 +392,14 @@ class BaseRequirementsTest(unittest.TestCase):
 
         self.assertTrue(not not_unique)
 
-
+    # Requirement 12
     def test_reused_dice(self):
         standard_setup()
 
         standard_boggle = StandardBoggle(number_of_boards=2, board_size=4)
-        standard_boggle.set_board_value(position=(1, 0), value='e')
-        standard_boggle.set_board_value(position=(1, 1), value='x')
-        standard_boggle.set_board_value(position=(1, 2), value='i')
-        standard_boggle.set_board_value(position=(1, 3), value='s')
-        standard_boggle.set_board_value(position=(0, 3), value='t')
-        standard_boggle.set_board_value(position=(2, 2), value='n')
-        standard_boggle.set_board_value(position=(2, 3), value='g')
+        standard_boggle.set_board_value(position=(1, 0), value='i')
+        standard_boggle.set_board_value(position=(1, 1), value='n')
+        standard_boggle.set_board_value(position=(2, 0), value='t')
 
         # board = standard_boggle.get_board_string(0, colored=False)
         # print('')
@@ -410,9 +407,88 @@ class BaseRequirementsTest(unittest.TestCase):
         #     print(row)
         # print('')
 
-        self.assertTrue(not standard_boggle._check_move(move='existing',
+        self.assertTrue(not standard_boggle._check_move(move='init',
                                                         board_id=0,
                                                         generous_boggle=False))
+
+    # Requirement 13
+    def test_generous_reused_dice(self):
+        standard_setup()
+
+        standard_boggle = StandardBoggle(number_of_boards=2, board_size=4)
+        standard_boggle.set_board_value(position=(0, 0), value='a')
+        standard_boggle.set_board_value(position=(1, 0), value='l')
+        standard_boggle.set_board_value(position=(2, 0), value='k')
+        standard_boggle.set_board_value(position=(2, 1), value='y')
+
+        board = standard_boggle.get_board_string(0, colored=False)
+        # print('')
+        # for row in board:
+        #     print(row)
+        # print('')
+
+        self.assertTrue(standard_boggle._check_move(move='alkyl',
+                                                    board_id=0,
+                                                    generous_boggle=True))
+
+    # TODO: Requirement 14
+
+    # Requirement 15
+    def test_reused_battle_word(self):
+        standard_setup()
+
+        battle_boggle = BattleBoggle(number_of_boards=2, board_size=4)
+        battle_boggle.set_board_value(position=(0, 0), value='c')
+        battle_boggle.set_board_value(position=(0, 1), value='o')
+        battle_boggle.set_board_value(position=(0, 2), value='w')
+
+        battle_boggle._check_move(move='cow',
+                                  board_id=0,
+                                  generous_boggle=False)
+
+        self.assertTrue(not battle_boggle._check_move(move='cow',
+                                                      board_id=1,
+                                                      generous_boggle=False))
+
+    # Requirement 16
+    def test_see_players_word(self):
+        standard_setup()
+
+        battle_boggle = BattleBoggle(number_of_boards=2, board_size=4)
+        battle_boggle.set_board_value(position=(0, 0), value='c')
+        battle_boggle.set_board_value(position=(0, 1), value='o')
+        battle_boggle.set_board_value(position=(0, 2), value='w')
+
+        battle_boggle._check_move(move='cow',
+                                  board_id=0,
+                                  generous_boggle=False)
+
+        self.assertTrue("cow" in battle_boggle.get_game_info(1))
+
+    # Requirement 17
+    def test_none_arithmetic_operation(self):
+        standard_setup()
+
+        foggle_boggle = FoggleBoggle(number_of_boards=2, board_size=4)
+        foggle_boggle.set_board_value(position=(0, 0), value='1')
+        foggle_boggle.set_board_value(position=(0, 1), value='1')
+        foggle_boggle.set_board_value(position=(0, 2), value='2')
+
+        self.assertTrue(not foggle_boggle._check_move(move='fail1+1=2',
+                                                      board_id=0,
+                                                      generous_boggle=False))
+
+    def test_false_arithmetic_operation(self):
+        standard_setup()
+
+        foggle_boggle = FoggleBoggle(number_of_boards=2, board_size=4)
+        foggle_boggle.set_board_value(position=(0, 0), value='1')
+        foggle_boggle.set_board_value(position=(0, 1), value='1')
+        foggle_boggle.set_board_value(position=(0, 2), value='1')
+
+        self.assertTrue(not foggle_boggle._check_move(move='1+1=1',
+                                                      board_id=0,
+                                                      generous_boggle=False))
 
 
 if __name__ == '__main__':

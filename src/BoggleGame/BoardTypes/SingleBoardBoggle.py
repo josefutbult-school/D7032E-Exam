@@ -16,3 +16,6 @@ class SingleBoardBoggle(BoggleBase, ABC):
 
     def get_used_words(self, board_id) -> list:
         return self.used_words
+
+    def set_board_value(self, position, value):
+        self.board[position[0]][position[1]].value = value

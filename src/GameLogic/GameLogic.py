@@ -32,12 +32,14 @@ class GameLogic:
                                                     board_size)
                 if moves is None:
                     move = PlayerIO.get_move(player_id)
-                elif not len(moves) or player_id != 0:
+                elif not len(moves[player_id]):
                     # If the game is mocked up, we only wants player one to go through the defined
                     # moves and then all players should be inactive until game termination
                     return
                 else:
-                    move = moves.pop(0)
+                    if player_id:
+                        sleep(0.1 * player_id)
+                    move = moves[player_id].pop(0)
 
                 PlayerIO.clear_player(player_id)
                 with parse_lock:

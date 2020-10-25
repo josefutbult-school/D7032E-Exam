@@ -20,7 +20,7 @@ class BoggleBase:
         seed(datetime.now())
         self.board_size = board_size
 
-    def traverse_board(self, board, move, previous_position):
+    def traverse_board(self, board, move, previous_position, generous_boggle):
         if len(move) > 0:
             positions = list(product([previous_position[0] - 1,
                                       previous_position[0],
@@ -37,9 +37,13 @@ class BoggleBase:
             for position in positions:
                 if board[position[0]][position[1]].value == move[0] and \
                         not board[position[0]][position[1]].traversed:
-                    board[position[0]][position[1]].traversed = True
+                    if not generous_boggle:
+                        board[position[0]][position[1]].traversed = True
                     return [board[position[0]][position[1]]] + \
-                           self.traverse_board(move=move[1:], board=board, previous_position=position)
+                           self.traverse_board(move=move[1:],
+                                               board=board,
+                                               previous_position=position,
+                                               generous_boggle=generous_boggle)
 
         return []
 
@@ -68,7 +72,7 @@ class BoggleBase:
                 if letter == board[row][column].value and not board[row][column].traversed:
                     if not generous_boggle:
                         board[row][column].traversed = True
-                    tiles = [board[row][column]] + self.traverse_board(board, remainder, (row, column))
+                    tiles = [board[row][column]] + self.traverse_board(board, remainder, (row, column), generous_boggle)
                     res = ''.join([str(instance.value) for instance in tiles])
                     if move == res and self.rules(board_id, move, register_used_word, rules_args):
                         for instance in tiles:

@@ -18,6 +18,12 @@ class WordBoggleBase(BoggleBase, ABC):
         board = super(WordBoggleBase, self). \
             create_board(board_size=board_size, tile_config_name='boggle16' if board_size == 4 else 'boggle25')
 
+        # ALKYL
+        # board[0][0].value = 'a'
+        # board[1][0].value = 'l'
+        # board[2][0].value = 'k'
+        # board[2][1].value = 'y'
+
         return board
 
     # Checks if a move is an instance of a dictionary and not already used.
