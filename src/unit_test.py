@@ -352,8 +352,6 @@ class BaseRequirementsTest(unittest.TestCase):
         standard_boggle.set_board_value(position=(0, 2), value='r')
         standard_boggle.set_board_value(position=(0, 3), value='d')
 
-        board = standard_boggle.get_board_string(0, colored=False)
-
         standard_boggle.game_paralell_process()
         self.assertCountEqual(standard_boggle.get_words_in_board(), ['word'])
 
@@ -401,12 +399,6 @@ class BaseRequirementsTest(unittest.TestCase):
         standard_boggle.set_board_value(position=(1, 1), value='n')
         standard_boggle.set_board_value(position=(2, 0), value='t')
 
-        # board = standard_boggle.get_board_string(0, colored=False)
-        # print('')
-        # for row in board:
-        #     print(row)
-        # print('')
-
         self.assertTrue(not standard_boggle._check_move(move='init',
                                                         board_id=0,
                                                         generous_boggle=False))
@@ -421,17 +413,9 @@ class BaseRequirementsTest(unittest.TestCase):
         standard_boggle.set_board_value(position=(2, 0), value='k')
         standard_boggle.set_board_value(position=(2, 1), value='y')
 
-        board = standard_boggle.get_board_string(0, colored=False)
-        # print('')
-        # for row in board:
-        #     print(row)
-        # print('')
-
         self.assertTrue(standard_boggle._check_move(move='alkyl',
                                                     board_id=0,
                                                     generous_boggle=True))
-
-    # TODO: Requirement 14
 
     # Requirement 15
     def test_reused_battle_word(self):

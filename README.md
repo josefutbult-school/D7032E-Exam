@@ -26,6 +26,12 @@ The unit test is started in the same manner.
 
 ```python3 src/unit_test.py```
 
+## Languages
+The current languages implemented to the program is english and swedish. There is currently a 
+problem in the communication, where the letters need to be pressent in the
+ASCII set, meaning that Å, Ä and Ö is not supported. These have been replaced
+with A and O in the wordlist and in the tiles of the game.
+
 ## Development
 The development of this software was a part of the course D7032E at LTU, and was done solely by me, 
 Josef Utbult. This code is open source and I invite you to use and to study it, if needed for example 
