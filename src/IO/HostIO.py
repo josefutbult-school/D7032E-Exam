@@ -5,6 +5,8 @@ from FileParser.DictionaryParser import DictionaryParser
 # This class takes care of all output to the command prompt and all input from the user.
 # It also takes care of creating a command line based menu from a list of menu items.
 class HostIO:
+    terminal_output = True
+
     @staticmethod
     def get_input(text):
         return input(text)
@@ -15,6 +17,9 @@ class HostIO:
 
     @staticmethod
     def display_standard_menu(menu_string, menu_items):
+        if not HostIO.terminal_output:
+            return
+
         menu_items_string = ""
         for instance in menu_items:
             menu_items_string += HostIO.format_str_length(
@@ -44,13 +49,23 @@ class HostIO:
 
     @staticmethod
     def clear():
+        if not HostIO.terminal_output:
+            return
+
         os.system('cls||clear')
 
     @staticmethod
     def print(text, clear_screen=False, direct_continue=False):
+        if not HostIO.terminal_output:
+            return
+
         if clear_screen:
             HostIO.clear()
         if not direct_continue:
             input(text + '\nPress any key to continue')
         else:
             print(text)
+
+    @staticmethod
+    def set_terminal_output(value):
+        HostIO.terminal_output = value

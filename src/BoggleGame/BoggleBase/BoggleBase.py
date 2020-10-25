@@ -148,3 +148,6 @@ class BoggleBase:
     @staticmethod
     def get_name():
         raise NotImplementedError()
+
+    def set_board_value(self, position, value):
+        raise NotImplementedError()

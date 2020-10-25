@@ -16,7 +16,7 @@ def main():
 def mock_game():
     SettingsParser.load_settings()
     DictionaryParser.load_dictionary(language=SettingsParser.get_setting('language'))
-    GameLogic.run_game(boogle_class=StandardBoggle, mockup=True)
+    GameLogic.run_game(boggle_class=StandardBoggle, mockup=True)
 
 
 def generate_board():

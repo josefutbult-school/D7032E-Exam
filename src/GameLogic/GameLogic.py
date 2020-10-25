@@ -11,7 +11,7 @@ from Player.Player import Player
 
 class GameLogic:
     @staticmethod
-    def player_parallel_process(player, boogle_instance, parse_lock, generous_boggle, board_size):
+    def player_parallel_process(player, boogle_instance, parse_lock, generous_boggle, board_size, moves=None):
         try:
             player_id = player.get_id()
             # TODO: There seems to be some problem with the initialization of the
@@ -30,7 +30,15 @@ class GameLogic:
                                                     board,
                                                     boogle_instance.get_game_info(player_id),
                                                     board_size)
-                move = PlayerIO.get_move(player_id)
+                if moves is None:
+                    move = PlayerIO.get_move(player_id)
+                elif not len(moves) or player_id != 0:
+                    # If the game is mocked up, we only wants player one to go through the defined
+                    # moves and then all players should be inactive until game termination
+                    return
+                else:
+                    move = moves.pop(0)
+
                 PlayerIO.clear_player(player_id)
                 with parse_lock:
                     PlayerIO.write_player(player_id, player.parse_move(boogle_instance.check_move(player_id,
@@ -46,29 +54,38 @@ class GameLogic:
         HostNetworking.player_write(key, f"Welcome player {key}\n")
 
     @staticmethod
-    def generate_game(boogle_class):
-        BaseManager.register('boogle_class', boogle_class)
+    def generate_game(boogle_class, moves=None, predefined_boggle_instance=None):
+        if predefined_boggle_instance is None:
+            BaseManager.register('boogle_class', boogle_class)
+        else:
+            BaseManager.register('boogle_class', type(predefined_boggle_instance))
         BaseManager.register('Player', Player)
         base_manager = BaseManager()
         base_manager.start()
-        boogle_instance = base_manager.boogle_class(number_of_boards=int(SettingsParser.get_setting('number_players')),
-                                                    board_size=int(SettingsParser.get_setting('board_size')))
+        if predefined_boggle_instance is None:
+            boggle_instance = base_manager.boogle_class(
+                number_of_boards=int(SettingsParser.get_setting('number_players')),
+                board_size=int(SettingsParser.get_setting('board_size')))
+        else:
+            boggle_instance = predefined_boggle_instance
+
         players = [base_manager.Player(i) for i in range(int(SettingsParser.get_setting("number_players")))]
         parse_lock = Lock()
 
         processes = [Process(target=GameLogic.player_parallel_process,
                              args=(player,
-                                   boogle_instance,
+                                   boggle_instance,
                                    parse_lock,
                                    SettingsParser.get_setting('generous_boggle'),
-                                   boogle_instance.get_board_size()))
+                                   boggle_instance.get_board_size(),
+                                   moves))
                      for player in players]
-        processes.append(Process(target=boogle_instance.game_paralell_process))
+        processes.append(Process(target=boggle_instance.game_paralell_process))
 
         for process in processes:
             process.start()
 
-        return boogle_instance, base_manager, players, processes
+        return boggle_instance, base_manager, players, processes
 
     @staticmethod
     def terminate_game(boggle_instance, base_manager, players, processes, mockup):
@@ -79,6 +96,7 @@ class GameLogic:
             if player.get_points() > winner.get_points():
                 winner = player
         winner_id = winner.get_id()
+        winner_points = winner.get_points()
         result += f"The winner is player {winner_id}\n{boggle_instance.get_game_end_info()}\n"
 
         for player in players:
@@ -92,25 +110,30 @@ class GameLogic:
         if not mockup:
             HostNetworking.close()
 
-        return winner_id
+        return winner_id, winner_points
 
     @staticmethod
-    def run_game(boogle_class, mockup=False):
+    def run_game(boggle_class, mockup=False, moves=None, predefined_boggle_instance=None):
         if SettingsParser.get_setting('number_players') < 2:
-            HostIO.print("To few player for a game. The minimal number of players are 2.", clear_screen=True)
-            HostIO.get_input("Press any key to end\n")
+            if not mockup:
+                HostIO.print("To few player for a game. The minimal number of players are 2.", clear_screen=True)
+                HostIO.get_input("Press any key to end\n")
             return -1
 
         PlayerIO.mockup = mockup
         if not mockup:
-            HostIO.print(f"The game is {boogle_class.get_name()}!\nWaiting for players", direct_continue=True,
+            HostIO.print(f"The game is {boggle_class.get_name()}!\nWaiting for players", direct_continue=True,
                          clear_screen=True)
             HostNetworking.connect_to_clients(number_of_connections=SettingsParser.get_setting('number_players'),
                                               on_connect=GameLogic.on_client_connect)
             HostIO.print("All players registered. Begin game.")
 
         HostIO.clear()
-        boggle_instance, base_manager, players, processes = GameLogic.generate_game(boogle_class)
+
+        boggle_instance, \
+        base_manager, \
+        players, \
+        processes = GameLogic.generate_game(boggle_class, moves, predefined_boggle_instance)
 
         try:
             for i in range(SettingsParser.get_setting('game_time'), 0, -1):

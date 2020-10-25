@@ -10,7 +10,7 @@ from FileParser.SettingsParser import SettingsParser
 class WordBoggleBase(BoggleBase, ABC):
     def __init__(self, number_of_boards, board_size):
         super(WordBoggleBase, self).__init__(number_of_boards, board_size)
-        self.words_in_board = None
+        self.words_in_board = []
 
     def create_board(self, board_size, tile_config_name=None) -> list:
         if board_size not in [4, 5]:
@@ -64,3 +64,6 @@ class WordBoggleBase(BoggleBase, ABC):
             return 'qu', move[2:]
         else:
             return super(WordBoggleBase, self).split_move(move)
+
+    def get_words_in_board(self):
+        return self.words_in_board
